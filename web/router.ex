@@ -7,5 +7,7 @@ defmodule QaPage.Router do
 
   scope "/api", QaPage do
     pipe_through :api
+
+    resources "/vk_notifications", VkNotificationController, only: [:create]
   end
 end
