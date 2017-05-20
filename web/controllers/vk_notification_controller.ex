@@ -1,8 +1,14 @@
 defmodule QaPage.VkNotificationController do
   use QaPage.Web, :controller
 
-  # @secret System.get_env("VK_PAGE_SECRET")
+  alias QaPage.Poster
+
+  @secret System.get_env("VK_PAGE_SECRET")
 
   def create(conn, %{"type" => "confirmation"}), do: render conn, "confirmation.text"
+  def create(conn, %{"object" => post, "secret" => @secret, "type" => "wall_post_new"}) do
+    Task.async(fn -> Poster.post(post) end)
+    render conn, "ok.text"
+  end
   def create(conn, _), do: render conn, "ok.text"
 end
