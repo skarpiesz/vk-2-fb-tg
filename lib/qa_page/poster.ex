@@ -19,7 +19,7 @@ defmodule QaPage.Poster do
 
   defp parse_text(text) do
     list = String.split(text, "\n", trim: true)
-    link = list |> List.last |> String.trim
+    link = String.trim(List.last(list) || "") 
     link?(link) && %{text: list |> List.delete_at(-1) |> Enum.join("\n"), link: link} || %{text: String.trim(text)}
   end
 
