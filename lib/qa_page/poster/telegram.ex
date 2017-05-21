@@ -10,7 +10,6 @@ defmodule QaPage.Poster.Telegram do
   def post(%{text: text, link: link, image_url: image_url}) do
     post(%{text: Format.text_with_url(text, link), image_url: image_url})
   end
-  def post(%{text: text, video_url: video_url}), do: post(%{text: text, link: video_url})
   def post(%{text: text, image_url: image_url}) do
     case String.length(text) do
       size when size > 200 ->
@@ -23,7 +22,6 @@ defmodule QaPage.Poster.Telegram do
   def post(%{text: text}),           do: post_to_telegram(@message_url, %{text: text, disable_web_page_preview: true})
   def post(%{image_url: image_url}), do: post_to_telegram(@photo_url, %{photo: image_url})
   def post(%{link: link}),           do: post_to_telegram(@message_url, %{text: link, disable_web_page_preview: false})
-  def post(%{video_url: video_url}), do: post(%{link: video_url})
   def post(_) do
   end
 

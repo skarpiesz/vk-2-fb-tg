@@ -10,9 +10,6 @@ defmodule QaPage.Poster.Facebook do
   def post(%{text: text, link: link, image_url: image_url}) do
     post_to_facebook(@photos_url, %{url: image_url, caption: Format.text_with_url(text, link)})
   end
-  def post(%{text: text, video_url: video_url}) do
-    post_to_facebook(@feed_url, %{message: Format.text_with_url(text, video_url), link: video_url})
-  end
   def post(%{link: link, image_url: image_url}), do: post(%{text: link, image_url: image_url})
   def post(%{text: text, image_url: image_url}), do: post_to_facebook(@photos_url, %{url: image_url, caption: text})
   def post(%{text: text, link: link}) do
@@ -21,7 +18,6 @@ defmodule QaPage.Poster.Facebook do
   def post(%{text: text}),           do: post_to_facebook(@feed_url, %{message: text})
   def post(%{image_url: image_url}), do: post_to_facebook(@photos_url, %{url: image_url})
   def post(%{link: link}),           do: post_to_facebook(@feed_url, %{link: link})
-  def post(%{video_url: video_url}), do: post_to_facebook(@feed_url, %{link: video_url})
   def post(_) do
   end
 
