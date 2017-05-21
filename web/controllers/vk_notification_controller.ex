@@ -1,6 +1,5 @@
 defmodule QaPage.VkNotificationController do
   use QaPage.Web, :controller
-
   alias QaPage.Poster
 
   @secret System.get_env("VK_PAGE_SECRET")

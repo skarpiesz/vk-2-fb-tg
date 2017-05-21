@@ -6,20 +6,21 @@ defmodule QaPage.Poster do
 
   def post(%{"post_type" => "post", "text" => text, "attachments" => attachments}) do
     if post?(attachments) do
-      params = Map.merge(parse_text(text), parse_attachments(attachments))
-      Task.async(fn -> Facebook.post(params) end)
-      Task.async(fn -> Telegram.post(params) end)
+      text |> parse_text |> Map.merge(parse_attachments(attachments)) |> post_everywhere
     end
   end
-  def post(%{"post_type" => "post", "text" => text}) do
-    parse_text(text)
-  end
+  def post(%{"post_type" => "post", "text" => text}), do: text |> parse_text |> post_everywhere
   def post(_) do
+  end
+
+  defp post_everywhere(params) do
+    Task.async(fn -> Facebook.post(params) end)
+    Task.async(fn -> Telegram.post(params) end)
   end
 
   defp parse_text(text) do
     list = String.split(text, "\n", trim: true)
-    link = String.trim(List.last(list) || "") 
+    link = String.trim(List.last(list) || "")
     link?(link) && %{text: list |> List.delete_at(-1) |> Enum.join("\n"), link: link} || %{text: String.trim(text)}
   end
 
